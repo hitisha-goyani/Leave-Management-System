@@ -1,12 +1,18 @@
 import dotenv from "dotenv"
 
 dotenv.config({path:"./env/.dev.env"})
+
 import express from "express"
 import HttpError from "./middleware/ErrorHandler.js";
 import connectDB from "./config/db.js";
+import userRouter from "./routes/userRoutes.js"
 
 
 const app = express();
+
+app.use(express.json());
+
+app.use("/user",userRouter);
 
 app.get("/",(req,res)=>{
     res.status(200).json("hello from server");
@@ -42,16 +48,14 @@ const startServer = async () =>{
 
     app.listen(port,() =>{
     console.log("server running on port",port)
-})
+    })
 
 }catch(error){
     console.log(error.message);
     process.exit(1);
 };
 
-startServer()
-    
-
-
-
 }
+
+
+startServer()
