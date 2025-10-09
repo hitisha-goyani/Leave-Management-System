@@ -1,6 +1,6 @@
 import User from "../model/USer.js"
 import HttpError from "../middleware/ErrorHandler.js"
-import RegisterUser from "../validations/userValidation.js";
+// import RegisterUser from "../validations/userValidation.js";
 
 
 const addUser = async (req,res,next)=>{
@@ -8,16 +8,16 @@ const addUser = async (req,res,next)=>{
 try{
 
 
-    const {error,value} = RegisterUser.validate(req.body);
+    // const {error,value} = RegisterUser.validate(req.body);
 
-    if(error){
+    // if(error){
 
-        return res.status(400).json(error.message);
-    }
+    //     return res.status(400).json(error.message);
+    // }
 
-    req.body = value;
+    // req.body = value;
     
-    const {name,email,password,role,department} = value
+    const {name,email,password,role,department} = req.body
 
 
     const existingUSer = await User.findOne({email})
@@ -43,7 +43,7 @@ try{
 
 }catch(error){
 
-    return next(new HttpError(error.message,500))
+    return next(new HttpError(error.message,500)) 
 
 }
 };
