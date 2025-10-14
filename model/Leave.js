@@ -16,7 +16,7 @@ const LeaveSchema = new mongoose.Schema({
     },
     leaveTypes:{
         type:String,
-        enum:["slick","casual","privilage"],
+        enum:["sick","casual","privilage"],
         required:true
     },
     reason:{
@@ -30,10 +30,10 @@ const LeaveSchema = new mongoose.Schema({
         enum:["pending","approved","reject"],
         default:"pending"
     },
-    approveBy:{
+    approvedBy:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
-        required:true,
+        // required:true,
 
     },
     rejectMessage:{
@@ -43,4 +43,6 @@ const LeaveSchema = new mongoose.Schema({
     }
 });
 
-export default LeaveSchema;
+const Leave = mongoose.model("Leaves",LeaveSchema);
+
+export default Leave;
