@@ -25,4 +25,22 @@ const LeaveValidation = Joi.object({
 
 })
 
-export default LeaveValidation;
+const updateLeave = Joi.object({
+
+    status:Joi.string().valid("approved","rejected").required().messages({
+        "status.empty":"status required",
+        "any.only":"status can be only approved or rejected",
+    }),
+
+    rejectMessage : Joi.string().when("status",{
+        is:"rejected",
+        then:Joi.required().messages({
+            "any.required":"rejectMessage is required when status is rejected",
+            "string.empty":"rejectMessage cannot be empty"
+        }),
+
+        otherwise:Joi.optional()
+    }),
+});
+
+export default {LeaveValidation,updateLeave};
