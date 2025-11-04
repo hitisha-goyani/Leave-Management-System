@@ -1,6 +1,9 @@
 import HttpError from "../middleware/ErrorHandler.js"
 import Leave from "../model/Leave.js";
 import User from "../model/USer.js";
+import sendEmail from "../templates/email.js";
+import leaveAppliedEmail from "../utilize/leaveApplied.js";
+import managerUpdated from "../utilize/managerupdateLeave.js";
 
 
 const applyLeave = async(req,res,next) =>{
@@ -20,8 +23,21 @@ const applyLeave = async(req,res,next) =>{
 
         await newLeave.save();
 
+        const user = await User.findById(req.user.id);
+
 
         res.status(201).json({message:"leave application successfully..",leave:newLeave});
+         await sendEmail({
+            to:user.email,
+            subject:`leave applied , ${user.name}!`,
+            html:leaveAppliedEmail(
+                user.name,
+                leaveTypes,
+                startDate,
+                endDate,
+                reason
+            )
+        })
 
     }catch(error){
         next(new HttpError(error.message,500))
@@ -91,7 +107,7 @@ const updateLeaves = async (req,res,next) =>{
 
         const leave = await Leave.findById(id).populate(
             "employeeId",
-            "department role"
+            "department role email name"
         )
 
         if(!leave){
@@ -116,6 +132,17 @@ const updateLeaves = async (req,res,next) =>{
         await leave.populate("approvedBy","name");
 
         res.status(200).json({message:"leave status updated",leave});
+
+        await sendEmail ({
+            to:leave.employeeId.email,
+            subject:`leave updated , ${leave.employeeId.name}!`,
+            html:managerUpdated(
+               leave.employeeId.name,
+                status, 
+                rejectMessage
+            )
+
+        })
 
 
     }catch(error){

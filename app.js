@@ -2,11 +2,14 @@ import dotenv from "dotenv"
 
 dotenv.config({path:"./env/.dev.env"})
 
+
+
 import express from "express"
 import HttpError from "./middleware/ErrorHandler.js";
 import connectDB from "./config/db.js";
 import userRouter from "./routes/userRoutes.js"
 import leaveRouter from "./routes/leaveRoutes.js"
+import transporter from "./templates/email.js";
 
 
 const app = express();

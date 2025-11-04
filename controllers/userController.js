@@ -2,6 +2,9 @@
 import HttpError from "../middleware/ErrorHandler.js"
 import User from "../model/USer.js"
 // import RegisterUser from "../validations/userValidation.js";
+import sendEmail from "../templates/email.js";
+import welcomeEmail from "../utilize/welcome.js";
+import accountDeletedEmail from "../utilize/deletedAcoout.js";
 
 
 const addUser = async (req,res,next)=>{
@@ -40,7 +43,13 @@ try{
 
     await saveUser.save();
 
-    res.status(201).json({message:"user created sucessfully" , saveUser})
+    res.status(201).json({message:"user created sucessfully" , saveUser});
+
+    await sendEmail({
+        to:saveUser.email,
+        subject:`welcome to Leave Management System ,${saveUser.name}!`,
+        html:welcomeEmail(saveUser.name),
+    })
 
 }catch(error){
 
@@ -134,6 +143,12 @@ try{
    }
 
    res.status(200).json({message:"user account deleted successfully..."})
+
+   await sendEmail({
+    to:user.email,
+    subject:`Good Bye,${user.name}!`,
+    html:accountDeletedEmail(user.name),
+   })
 
 
 }catch(error){
