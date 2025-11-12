@@ -1,6 +1,6 @@
-import dotenv from "dotenv"
+// import dotenv from "dotenv"
 
-dotenv.config({path:"./env/.dev.env"});
+// dotenv.config({path:"./env/.dev.env"});
 
 import nodemailer from "nodemailer";
 

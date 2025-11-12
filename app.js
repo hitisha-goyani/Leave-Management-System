@@ -1,6 +1,6 @@
-import dotenv from "dotenv"
+// import dotenv from "dotenv"
 
-dotenv.config({path:"./env/.dev.env"})
+// dotenv.config({path:"./env/.dev.env"})
 
 
 
@@ -37,7 +37,7 @@ app.use((error,req,res,next)=>{
     .json(error.message || "something went wrong try again")
 })
 
-const port = process.env.PORT || 5000;
+const port =  5000;
 
 const startServer = async () =>{
 
